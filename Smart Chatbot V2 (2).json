@@ -1,0 +1,4035 @@
+{
+  "name": "Smart Chatbot V2",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1568,
+        1392
+      ],
+      "id": "b20d761f-0605-4c2a-a8c5-d02630a6eaa3",
+      "name": "WhatsApp Trigger",
+      "webhookId": "df9dd60c-1f61-42dc-9ccf-58ecd18642d6",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "ZAhLxli3tuc0cFIH",
+          "name": "WhatsApp for Receiving Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/1147471374112722/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"data\": [\n    {\n      \"event_name\": \"Purchase\",\n      \"event_time\": {{ Math.floor(Date.now() / 1000) }},\n      \"action_source\": \"website\",\n      \"event_source_url\": \"https://websiteklien.com/terima-kasih-pesanan-XYZ-123\",\n      \"user_data\": {\n        \"em\": \"c3c6f662999589d97b003c4c995f32468351584616238380e22933010f438656\",\n        \"ph\": \"6f1c4e976a5a297e69d7b9c9f65e2365287f461159846b45a6396e8d1a6e902b\",\n        \"fn\": \"55c8a41926b38c2275f1146f8ac3f64c63390eda15b4937740f901174092b77a\",\n        \"ct\": \"9405d429712741544a8b668f184742a0889223364f33b1e77f0a1c128f117c05\",\n        \"zp\": \"b11783518386f788b15d2a32194a28723c6237894a4130097f48043685c2c9d6\",\n        \"country\": \"3f67a2165b706c6978e5f22e863d64c1737f5954a7c1d320499e3f6551b88a8d\"\n      },\n      \"custom_data\": {\n        \"value\": 150000,\n        \"currency\": \"IDR\",\n        \"content_name\": \"Nama Produk Klien Sesuai Pesanan\",\n        \"content_ids\": [\"SKU-PRODUK-001\"],\n        \"num_items\": 2,\n        \"payment_method\": \"qris\"\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2800,
+        880
+      ],
+      "id": "5a30a4f1-06c9-4c7b-bb08-2211aba9182e",
+      "name": "Meta Pixel Purchasing",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7QNhHHaUzAbu8cmD",
+          "name": "Ritzglam Facebook Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4bbcea53-dc1c-4c00-b48a-1ffaf0db22d7",
+              "name": "email",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "9f139bff-0a29-40c9-b226-f7648592ee81",
+              "name": "phone_number",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "ab4a16ff-0317-4ee5-9b66-d760c4310704",
+              "name": "name",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "20dfe819-0ddf-4a95-8276-07c65837f99e",
+              "name": "city",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "8e328f9d-4cb1-4bef-9940-08691b7f93ad",
+              "name": "zp",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "88a8cbe7-8a50-4d06-a7e9-e6b8aaacf3da",
+              "name": "country",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -3024,
+        880
+      ],
+      "id": "cb56eec9-7a71-479a-88d0-3ba0b8ccd5e7",
+      "name": "Hashing Factory (User Data Encryptor)"
+    },
+    {
+      "parameters": {
+        "content": "## Perombakan Flow (30/9)\n- Setelah customer memilih beli, status Lead sambil mengisi biodata (disimpan di sheet yang berbeda)\n\n- Setelah customer mengisi biodata, customer diwajibkan untuk mengisi barang apa saja yang akan di checkout (initial checkout)\n\n- Setelah itu, customer akan melakukan payment. status akan berubah ke purchased / buyer ",
+        "height": 416,
+        "width": 560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3152,
+        656
+      ],
+      "id": "f5ac49f5-b10e-4fc5-a9d4-6e8e96c8a580",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "516d2846-e578-4d18-b2ff-086b4ea987a9",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "live-agent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "human-agent-flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "64decb30-bc32-4ea3-ad01-7fce95ba90aa",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "new-customer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "new-customer-flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b95a8594-7dd9-47a0-8052-6ce7f38421f0",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "following-up-reminder",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "foll-up 1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ba8bbd6e-12f4-4eaf-bef3-0aaf4f538020",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "following-up-promotion",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "foll-up 2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f2b50571-3eb7-44dd-bf96-7de4f4ac5605",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "early-customer"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ea50c3d2-1cb2-4154-b3e2-cceec0656cdc",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "lead",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "lead-flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ef962ed3-0f93-446c-981e-699d27a388fb",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "checkout",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "checkout-flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ebeea139-c530-454b-9760-060b7943c7fa",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "awaiting-payment",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "awaiting-payment-flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "15451eff-3b15-4b5f-80bf-f4597f983bfc",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "purchased",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "purchased-flow"
+            }
+          ]
+        },
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -464,
+        1264
+      ],
+      "id": "101c0346-69db-408c-8cf6-60c18b142a21",
+      "name": "Status Checker"
+    },
+    {
+      "parameters": {
+        "content": "## Initial Checkout Flow Feature #1 [Pending]\nProses sistem memproses pesanan\nTarget Minggu ini (3 hari): Flow Checkout saja.\n\n1. Setting Automation Prompt untuk mengubah dari checkout ke waiting payment (DONE)\n\n2. Switch (lihat payment_method) (DONE)\n- QRIS\n- TF\n- COD\n\n3.Tiap Metode Pembayaran ada draft output di WA (beri validasi timer pembayaran hanya 15 menit, jika tidak bayar maka hangus orderannya)\n",
+        "height": 416,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2576,
+        656
+      ],
+      "id": "f0e3c76e-d834-4e4d-a817-d8633ae68f10",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Initial Checkout Flow Feature #2 [Pending]\nProses sistem pembayaran otomatis\nTarget Minggu ini (6 hari): Integrasi Initial Checkout & Sandbox Payment Gateway by Xendit \n\n",
+        "height": 416,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2224,
+        656
+      ],
+      "id": "3dd1497c-7272-4212-9757-47d53cb6bb68",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Project Plan Boards - AI Automation Chatbot with Integrated Payment",
+        "height": 1344,
+        "width": 1376,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3200,
+        576
+      ],
+      "id": "d98ad3df-0988-4dac-bc79-e725ed346e52",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## CRUTIAL WORKFLOW (Module 1) DONE!\n1. Integrated with META ADS API (ViewContent, Lead, Initial Checkout, Purchasing)\n2. WhatsApp Chatbot using AI Agent util close order. ",
+        "height": 96,
+        "width": 1264
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3152,
+        1104
+      ],
+      "id": "7dac788d-ae7b-4ddb-a000-3fba9ef42aa7",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f139bff-0a29-40c9-b226-f7648592ee81",
+              "name": "URI",
+              "value": "lip-serum",
+              "type": "string"
+            },
+            {
+              "id": "91396e0d-7ecb-4800-aa96-6b4a9f06b9fe",
+              "name": "fullname",
+              "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2976,
+        1344
+      ],
+      "id": "71045f2f-0d36-4e20-923b-2159b68b753f",
+      "name": "URI Configuration (Lip Serum)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f139bff-0a29-40c9-b226-f7648592ee81",
+              "name": "URI",
+              "value": "lip-balm",
+              "type": "string"
+            },
+            {
+              "id": "44f508a1-d511-4cf2-9e4e-11783fc3d3f5",
+              "name": "fullname",
+              "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2976,
+        1536
+      ],
+      "id": "2fa0ddd8-4738-43f4-a8c5-bef9913ebfba",
+      "name": "URI Configuration (Lip Balm)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f139bff-0a29-40c9-b226-f7648592ee81",
+              "name": "URI",
+              "value": "moisture",
+              "type": "string"
+            },
+            {
+              "id": "e66cdb60-e430-487f-9eca-0621f6848d5c",
+              "name": "fullname",
+              "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2976,
+        1712
+      ],
+      "id": "6b12dff3-c3a6-409f-adb5-44c0a3161ae2",
+      "name": "URI Configuration (Moisture)"
+    },
+    {
+      "parameters": {
+        "type": "SHA256",
+        "value": "={{ $json.fullname }}",
+        "dataPropertyName": "data.name"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -2432,
+        1552
+      ],
+      "id": "e0fbcd1b-458b-4519-99fe-633363a1d491",
+      "name": "ViewContent Hashing - fullName"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -2640,
+        1536
+      ],
+      "id": "53b8c0ce-ca87-4cad-b7a4-25107e1e649e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "855cc7cf-f16f-4382-8dc0-9db19704d1bb",
+              "leftValue": "={{ $json['Status '] }}",
+              "rightValue": "live-agent",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -784,
+        1184
+      ],
+      "id": "77fbc7be-95da-45fe-b33b-978f4e8c7ba0",
+      "name": "Live-Agent Checker"
+    },
+    {
+      "parameters": {
+        "content": "## Human Agent (Status Checker)\nCustomer akan berinteraksi secara terus menerus hingga status berubah kembali ke AI Agent (keterangan status selain live-agent)",
+        "height": 304,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -816,
+        1008
+      ],
+      "id": "598f2e6d-9eff-4151-bd8a-d1aa555f800c",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        816
+      ],
+      "id": "ef529332-75e7-4b90-8d7e-59fb0c3a1c6d",
+      "name": "Customer Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "MrMfc3VJLLr2Uee2",
+          "name": "Google Gemini(PaLM) - AI Agent API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=# 1. CORE IDENTITY (Who You Are?)\nYou are RitzGlam Bestie AI 💖, RitzGlam's super friendly and up-to-date sales assistant. Your main goal is to chat with customers about RitzGlam products, answer their questions, and identify when they are ready to order. Speak in friendly, relatable Indonesian.\n\n# 2. KNOWLEDGE BASE (What You Know?)\nYou know all about RitzGlam's amazing products! If you need specific details like price, benefits, or SKU, just use the `Product_Data` tool.\n\n# 3. REAL-TIME CONTEXT (What's Happening Now?)\n* **Customer:** {{ $('Customer Database Check').item.json['Username WhatsApp'] || 'Kakak' }}\n* **WA Number:** {{ $('Customer Database Check').item.json['Nomor WhatsApp'] }}\n* **Current Chat Status:** {{ $('Customer Database Check').item.json['Status '] || 'new-customer' }}\n* **Previous Chat History:** *(Check using 'Read_Chat_Logger' for context)*\n* **Customer's Latest Message:** \"{{ $('WhatsApp Trigger').item.json.messages[0].text.body }}\"\n\n# 4. AVAILABLE TOOLS (Your Secret Weapons!)\nYou only have these tools, use them when needed:\n\n-   **Tool Name:** `Product_Data`\n    * **Description:** Use this to get the full scoop on products (price, description, SKU) from our database.\n    * **Parameters:** `product_name` (string)\n\n-   **Tool Name:** `Edit_Customer_Data`\n    * **Description:** Use this tool to update the customer's status in the database.\n    * **Parameters:** `Nomor_WhatsApp` (string), `Status` (string)\n\n-   **Tool Name:** `Add_Chat_Logger`\n    * **Description:** Call this tool to log a conversation turn into the database.\n    * **Parameters:** `Nomor_HP` (string), `Nama` (string), `Pesan_Customer` (string), `AI_Response` (string)\n\n-   **Tool Name:** `Read_Chat_Logger`\n    * **Description:** Use this to see the previous chat history with this customer.\n    * **Parameters:** `Nomor_WhatsApp` (string)\n\n-   **Tool Name:** `Read_Customer_Data`\n    * **Description:** Use this to check the customer's profile data (name, last status).\n    * **Parameters:** `Nomor_WhatsApp` (string)\n\n# 5. GLOBAL RULES (Must Follow!)\n* **STEP 1:** If the customer asks for a human (\"Butuh bantuan\", \"kendala\", \"komplain\", \"admin\"), STOP immediately. Your ONLY action is to output JSON setting `current_status` to `\"need-agent\"` and you must Call `Edit_Customer_Data` Tool.\n        * *Parameters:* `Nomor_WhatsApp` (from context), `Status: \"live-agent\"`\n* **Step 2: Call `Edit_Customer_Data` Tool.** You MUST call this tool.\n    * *Parameters:* `Nomor_WhatsApp` (from context), `Status: \"live-agent\"` \n\n# 6. WORKFLOW & INSTRUCTIONS (How You Work!)\nYour main focus is to be a fun chat buddy. You MUST respond to the user's message AND decide if any tools need to be called.\n\n1.  **Greet & Context:** Greet the customer by name (from `Read_Customer_Data`). Briefly check history with `Read_Chat_Logger` if needed.\n2.  **Answer General Questions:** If asked general product questions (e.g., \"info serum\", \"harga lip balm\", \"lihat foto\"):\n    * **Tool Call 1:** Call `Product_Data` to get info.\n    * **Generate Response:** Formulate your `response_text` using the info from the tool. (If they ask for a photo, just say \"Fotonya ada di katalog kami ya Kak!\").\n    * **Tool Call 2:** **ALWAYS** call `Add_Chat_Logger` (logging your response).\n    * **Set Status:** `current_status: \"new-customer\"`.\n3.  **Detect Purchase Intent (CRITICAL SEQUENCE):** If the message clearly indicates they want to buy (e.g., \"mau order\", \"pesan ini dong\", \"bolehh bungkus\", \"checkout\",, \"mau\" etc.):\n    * **This is a multi-step, multi-tool task. You must plan and execute all steps.**\n    * **Step 1: Generate the Lead Form Text.** This is the example `response_text` you will output. Make it randomly for natural language. \n        * *Text:*\n            ```\n            Asiiik, pilihan tepat Kak! Biar pesenannya bisa diproses, tolong isi data ini bentar yaa: ✨\n            - Nama Lengkap:\n            - Nomor Telepon (WhatsApp):\n            - Jumlah (pcs):\n            - Alamat Lengkap untuk Pengiriman:\n            ```\n    * **Step 2: Call `Edit_Customer_Data` Tool.** You MUST call this tool.\n        * *Parameters:* `Nomor_WhatsApp` (from context), `Status: \"lead\"`\n    * **Step 3: Call `Add_Chat_Logger` Tool.** You MUST also call this tool.\n        * *Parameters:* `Nomor_HP` (from context), `Nama` (from context), `Pesan_Customer` (from context), `AI_Response` (the text you generated in Step 1).\n    * **Step 4: Final JSON Output.** Your main JSON output MUST contain the `response_text` from Step 1 and the `current_status: \"lead\"`.\n\n# 7. OUTPUT FORMAT (Your Deliverable!)\n* Your result **MUST** be raw JSON format ONLY. No ```json tags or extra explanations.\n* The JSON **MUST** have exactly these 2 keys:\n    1.  `\"response_text\"`: (string) Your chat reply to the customer.\n    2.  `\"current_status\"`: (string) The customer's status after processing (e.g., `\"new-customer\"`, `\"lead\"`, `\"need-agent\"`).\n* **Tool Call 1:** Call `Edit_status` to edit status customer for first message to 'new-customer'."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        560
+      ],
+      "id": "35d81c19-8aa7-44b8-a80e-23efe77fd72b",
+      "name": "Frontliner System",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "serum",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "e8c46faa-9622-41b1-9af5-0257f6edf486"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Serum Flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "49ec7c1c-0a3d-41f9-ba84-6b4d680ab6f3",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "Lip Balm",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Lip Balm Flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "528ce069-e97e-43b8-8511-887401d5a5cf",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "Moisturizer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Moisturizer Flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fb7bda87-40ed-4606-acd2-d9bb8c23129c",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "pelembap bibir",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Serum Flow-2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fbbb33fa-da1d-4f29-b7f2-56641ca8317f",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "produk bibir",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Serum Flow-3"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3ddd7fec-6ddb-4844-80a1-f89ca4c5d421",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "bibir kering",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Serum Flow-4"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fc6755b5-a3c7-4660-a1ae-2e57ff285be4",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "pelembap wajah",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Moisturizer-2"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "09bc0eab-b76d-4ce2-930e-b713097e90df",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "moisturizer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Moisturizer-3"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d31ae565-81d1-47b7-ae41-b11ae5cce8df",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "krim",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Moisturizer-4"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6ff701d1-ff1c-4f2b-a7ae-0264088b28f2",
+                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+                    "rightValue": "hydrating",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Moisturizer-5"
+            }
+          ]
+        },
+        "options": {
+          "ignoreCase": true,
+          "allMatchingOutputs": false
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1248,
+        448
+      ],
+      "id": "d0411989-269b-489e-903a-68d3a11c6320",
+      "name": "Word Detection Rules1"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "=829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "messageType": "image",
+        "mediaLink": "https://down-id.img.susercontent.com/file/id-11134207-7quky-lib9bux96g0pa9",
+        "additionalFields": {
+          "mediaCaption": "Ingin tahu terkait produk unggulan kami? Berikut merupakan Ritzglam Lip Serum!"
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        416
+      ],
+      "id": "819d991e-e987-4475-a400-564f73df91cf",
+      "name": "Send Serum Express1",
+      "webhookId": "cb967761-ff01-4583-9cb8-cd6efd5e0490",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "=",
+        "messageType": "image",
+        "mediaLink": "https://kosmetikpedia.co.id/wp-content/uploads/2024/07/ritzglam-lip-serum-review.webp",
+        "additionalFields": {
+          "mediaCaption": "Berikut Merupakan foto dari Lip Balm kami kak. "
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        608
+      ],
+      "id": "40e791c5-5571-4a24-aed0-9a56ccca6691",
+      "name": "Send Lip Balm1",
+      "webhookId": "e713a64d-4dba-4a35-9d69-c3ea4c73e033",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "=",
+        "messageType": "image",
+        "mediaLink": "https://ritzglam.com/wp-content/uploads/2025/09/1C_3_11zon.webp",
+        "additionalFields": {
+          "mediaCaption": "Berikut Merupakan foto dari Moizturizer kami kak. "
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        800
+      ],
+      "id": "a272bdb4-89fc-4835-a4ed-0fd674a466af",
+      "name": "Send Moisturizer1",
+      "webhookId": "3cd1f6f5-9339-4698-bef1-cf2557e73849",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# ViewContent Conversation API - No Product\nDigunakan untuk Melihat kecenderungan pengguna dalam melihat produk",
+        "height": 320,
+        "width": 688
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        16
+      ],
+      "id": "fc99506b-93d6-421b-b584-b6ae4602b9b3",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.response_text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        128
+      ],
+      "id": "81475b6f-d2b3-489f-b6f8-7ddfe0fe27b4",
+      "name": "Send Response - AI Agent Consultant",
+      "webhookId": "c900aa91-b7d4-48f1-b3af-f9a872571246",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "type": "SHA256",
+        "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}",
+        "dataPropertyName": "data.name"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        128
+      ],
+      "id": "d88c6354-0c8e-4c26-9e25-4f17025c5397",
+      "name": "ViewContent Hashing - fullName1"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Static Word Detection\nDigunakan untuk mengirim gambar berdasarkan keyword customer",
+        "height": 688,
+        "width": 688
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        384
+      ],
+      "id": "3bcc899f-7b63-4f6e-bb8b-5417c3f39cb4",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mengambil output string dari AI Agent\nconst rawOutput = $input.first().json.output\n\n// Menggunakan regular expression untuk menemukan blok JSON {...} di dalam string\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n\n// Cek jika JSON ditemukan\nif (jsonMatch) {\n  try {\n    // Mengambil string JSON yang bersih\n    const jsonString = jsonMatch[0];\n    \n    // Melakukan parsing string menjadi objek JSON yang sebenarnya\n    const parsedJson = JSON.parse(jsonString);\n    \n    // Mengembalikan objek JSON yang sudah bersih agar bisa digunakan node selanjutnya\n    return [\n      {\n        json: parsedJson\n      }\n    ];\n    \n  } catch (error) {\n    // Jika parsing gagal, kembalikan error agar workflow bisa dihentikan atau ditangani\n    console.error(\"Gagal melakukan parsing JSON:\", error);\n    return [{ json: { error: \"Invalid JSON format from AI\" } }];\n  }\n}\n\n// Jika tidak ada blok JSON yang ditemukan sama sekali\nreturn [{ json: { error: \"No JSON block found in AI output\" } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        448
+      ],
+      "id": "6f7ff405-87f6-49fd-924a-1bebea6e2a60",
+      "name": "Parsing JSON"
+    },
+    {
+      "parameters": {
+        "content": "# Lead  System\nDigunakan untuk Mendata data customer dan membuat invoice order (sementara). Data ini akan dikirimkan ke Meta Pixel (Lead) ",
+        "height": 576,
+        "width": 1040
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "5dc0688f-d447-430b-ba43-5ce3cbaf56fb",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 352502693,
+          "mode": "list",
+          "cachedResultName": "product_list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=352502693"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        816
+      ],
+      "id": "9d305442-fe10-4786-8d86-6f8548f8f564",
+      "name": "Product Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor WhatsApp": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_WhatsApp__using_to_match_', ``, 'string') }}",
+            "Status ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Status_', ``, 'string') }}",
+            "Timestamps": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        816
+      ],
+      "id": "9b9a2f09-16df-432d-8327-b69237ec3d1f",
+      "name": "Edit Customer Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        816
+      ],
+      "id": "14fdf2a9-da40-444f-bdaa-83fb008322f4",
+      "name": "Read Customer Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "chat_log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor HP": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_HP', ``, 'string') }}",
+            "Nama": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nama', ``, 'string') }}",
+            "Pesan Customer": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Pesan_Customer', ``, 'string') }}",
+            "AI Response": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('AI_Response', ``, 'string') }}",
+            "Timestamp": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nomor HP",
+              "displayName": "Nomor HP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pesan Customer",
+              "displayName": "Pesan Customer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Response",
+              "displayName": "AI Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        352,
+        816
+      ],
+      "id": "7488ab9d-ec76-4469-81eb-3b998e1b9210",
+      "name": "Add Chat Logger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "chat_log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        816
+      ],
+      "id": "71e60495-476e-4a9f-9e31-02488069feca",
+      "name": "Read Chat Logger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        32,
+        1504
+      ],
+      "id": "2827c81f-433d-4b82-b5f5-d5b3369aa6f8",
+      "name": "Customer Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "MrMfc3VJLLr2Uee2",
+          "name": "Google Gemini(PaLM) - AI Agent API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=# 1. CORE IDENTITY (Who You Are?)\nYou are the RitzGlam **Lead System AI** ⚙️. You are activated when a customer (status 'lead') sends their biodata. Your critical mission is to: process this data accurately, save the order, update the customer's status to 'checkout', and then respond with an order confirmation, asking for their payment method. Be precise, efficient, and use clear Indonesian.\n\n# 2. KNOWLEDGE BASE (What You Know?)\nYou can verify product details (existence, price, SKU) using the `Lead - Product Data` tool.\n\n# 3. REAL-TIME CONTEXT (What's Happening Now?)\n* **Customer:** {{ $json['Username WhatsApp'] }} *(Assuming data comes from a previous step)*\n* **WA Number:** {{ $json['Nomor WhatsApp'] }} *(Assuming data comes from a previous step)*\n* **Current Chat Status:** lead *(This is why you are active)*\n* **Customer's Latest Message:** \"{{ $('WhatsApp Trigger').item.json.messages[0].text.body }}\" *(This message CONTAINS the biodata you must process)*\n\n# 4. AVAILABLE TOOLS (Your Action Kit!)\nYou have ONLY these tools connected:\n\n-   **Tool Name:** `Lead - Product Data`\n    * **Description:** Use this FIRST to verify the product mentioned/implied in the biodata exists and to get its exact price per item (`Harga (Asli)`) and SKU (`Kode Produk (SKU)`) from the `product_list` sheet.\n    * **Parameters:** `product_name` (string)\n-   **Tool Name:** `Lead - Add Order Invoice`\n    * **Description:** Call this AFTER parsing biodata and getting product details to SAVE the complete order to the `order_list` sheet.\n    * **Parameters:** `Nama` (string), `Alamat` (string), `Nomor_Telepon` (string), `Nama_Produk` (string), `qty` (integer), `Harga` (integer - **TOTAL** price), `Kode_Produk` (string - SKU)\n-   **Tool Name:** `Lead - Edit Customer Data`\n    * **Description:** Call this AFTER successfully saving the order invoice (`Lead - Add Order Invoice`) to update the customer's status in the `customer_data` sheet to exactly `\"checkout\"`. Note, if the client sent the number with '0' in early number, you can change with '62' \n    * **Parameters:** `Nomor_WhatsApp` (string), `Status` (string, fixed value: \"checkout\")\n-   **Tool Name:** `Lead - Add Chat Logger`\n    * **Description:** Call this LAST, after generating your final response, to log this specific interaction into the `chat_log` sheet.\n    * **Parameters:** `Nomor_HP` (string), `Nama` (string), `Pesan_Customer` (string - the biodata message), `AI_Response` (string - your confirmation message)\n\n# 5. GLOBAL RULES (Must Follow!)\n* If the customer's message, despite being in 'lead' status, asks for a human (\"live agent\", \"CS\"), STOP. Output JSON must set `current_status`: \"need-agent\".\n* If the customer cancels (\"tidak jadi\", \"batal\") in their biodata message, STOP. Output JSON must set `current_status`: \"new-customer\".\n\n# 6. WORKFLOW & INSTRUCTIONS (Your EXACT Sequence!)\nYou are triggered because the customer sent their biodata. Follow these steps meticulously:\n\n1.  **Parse Biodata (Internal Task):** Carefully **extract** the following from the `Latest Customer Message`:\n    * `customer_full_name`\n    * `customer_address`\n    * `customer_phone` (confirm if it matches context)\n    * `order_quantity` (integer)\n    * Determine the likely `product_name` being ordered based on the context or previous messages (assume if unclear, but try to be accurate).\n2.  **Verify & Get Details (Tool Call):** Call `Lead - Product Data` using the `product_name`. Get the `Harga (Asli)` (price per item) and `Kode Produk (SKU)`. If the product doesn't exist, generate an error response and stop.\n3.  **Calculate Total:** `total_price = order_quantity * Harga (Asli)`.\n4.  **Save Order (Tool Call):** Call `Lead - Add Order Invoice` with all extracted and retrieved data (`customer_full_name`, `customer_address`, `customer_phone`, `product_name`, `order_quantity`, `total_price`, SKU).\n5.  **Update Status (Tool Call):** Call `Lead - Edit Customer Data` to set the customer's status to `\"checkout\"`.\n6.  **Generate Response:** Create the Order Summary message using the extracted/calculated data. Ask for the payment method (QRIS/TF/COD).\n7.  **Log Chat (Tool Call):** Call `Lead - Add Chat Logger` with the details of this interaction (customer's biodata message and your summary response).\n8.  **Prepare Final Output:** Create the final JSON output.\n\n# 7. OUTPUT FORMAT (Your Work Result!)\n* Output RAW JSON ONLY. No markdown.\n* The JSON MUST contain these THREE keys:\n    1.  `\"response_text\"`: (string) The Order Summary + Payment Method Question you generated in Step 7.\n    2.  `\"current_status\"`: (string) Set this to `\"checkout\"` (or `\"new-customer\"` / `\"need-agent\"` if global rules triggered). **Do NOT set it to awaiting-payment yet.**\n    3.  `\"extracted_biodata\"`: (object) A nested JSON object containing the raw biodata you parsed in Step 1. Use simple keys (e.g., `full_name`, `address`, `phone`, `quantity`, `product_name`). This is crucial for the subsequent 'Lead Conversation API' flow shown in your screenshot.\n\n* **Example Output:**\n    ```json\n    {\n      \"response_text\": \"Makasih Kak Budi! Datanya udah masuk nih, cek lagi yaa:\\n\\n📦 PESANAN KAMU\\n- Produk: Lip Serum Sweet Strawberry\\n- Jumlah: 2 pcs\\n- Total: Rp 178.000\\n- Kirim ke: Jl. Keren No. 1, Surabaya\\n\\nUdah bener semua? Kalau iya, mau bayar pakai apa nih? (QRIS / Transfer Bank / COD) 😉\",\n      \"current_status\": \"checkout\",\n      \"extracted_biodata\": {\n        \"full_name\": \"Budi Santoso\",\n        \"address\": \"Jl. Keren No. 1, Surabaya\",\n        \"phone\": \"081234567890\",\n        \"quantity\": 2,\n        \"price\" : 89000\n        \"product_name\": \"Lip Serum Sweet Strawberry\"\n      }\n    }\n    ```"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        1312
+      ],
+      "id": "853103ff-a8c0-46a5-b0f0-d099636da68b",
+      "name": "Lead System"
+    },
+    {
+      "parameters": {
+        "content": "## Lead Conversation API\nDigunakan untuk Mencatat Biodata yang dikirimkan user dan dikirimkan ke meta API",
+        "height": 320,
+        "width": 688
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1168
+      ],
+      "id": "a3c45722-67af-4210-a145-e5dcb20af235",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mengambil output string dari AI Agent\nconst rawOutput = $input.first().json.output;\n\n// Menggunakan regular expression untuk menemukan blok JSON {...} di dalam string\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n\n// Cek jika JSON ditemukan\nif (jsonMatch) {\n  try {\n    // Mengambil string JSON yang bersih\n    const jsonString = jsonMatch[0];\n    \n    // Melakukan parsing string menjadi objek JSON yang sebenarnya\n    const parsedJson = JSON.parse(jsonString);\n    \n    // Mengembalikan objek JSON yang sudah bersih agar bisa digunakan node selanjutnya\n    return [\n      {\n        json: parsedJson\n      }\n    ];\n    \n  } catch (error) {\n    // Jika parsing gagal, kembalikan error agar workflow bisa dihentikan atau ditangani\n    console.error(\"Gagal melakukan parsing JSON:\", error);\n    return [{ json: { error: \"Invalid JSON format from AI\" } }];\n  }\n}\n\n// Jika tidak ada blok JSON yang ditemukan sama sekali\nreturn [{ json: { error: \"No JSON block found in AI output\" } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        1312
+      ],
+      "id": "cf6fa721-2ba2-4c9d-9226-c4ea786e2119",
+      "name": "Parsing JSON - Lead Function"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.response_text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        1280
+      ],
+      "id": "dd7e1138-9d14-4dff-876c-41a5b5c04892",
+      "name": "Send Response - Lead AI Agent ",
+      "webhookId": "c900aa91-b7d4-48f1-b3af-f9a872571246",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Impor library kriptografi bawaan Node.js\nconst crypto = require('crypto');\n\n// 1. Ambil DATA OBJEK YANG SUDAH DIPARSING\nconst userData = $('Parsing JSON - Lead Function').first().json.extracted_biodata;\n\nif (!userData) {\n  throw new Error(\"Data 'order_data' dari 'Parsing JSON' tidak ditemukan.\");\n}\n\n// 2. Fungsi Hashing\nfunction sha256(data) {\n  if (typeof data !== 'string' || data.length === 0) return null;\n  return crypto.createHash('sha256').update(data).digest('hex');\n}\n\n// 3. Siapkan output HANYA berisi nilai baru\nconst output = {\n  hashed_fn: sha256(userData.full_name),\n  hashed_ph: sha256(userData.phone),\n  hashed_ct: sha256(userData.address),\n  totalValue: userData.quantity * userData.price\n};\n\n// 4. Kembalikan objek baru ini.\n// Output dari node ini akan berisi: { \"hashed_fn\": \"...\", \"hashed_ph\": \"...\", ... }\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1488,
+        1280
+      ],
+      "id": "431b31f2-2cdf-4a7e-b1ff-3ab0b21968e2",
+      "name": "Lead Hashing"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor WhatsApp": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_WhatsApp__using_to_match_', ``, 'string') }}",
+            "Status ": "checkout",
+            "Timestamps": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        496,
+        1536
+      ],
+      "id": "ba3b173f-5f2f-41cf-845f-7407f88ab8f3",
+      "name": "Lead - Edit Customer Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "chat_log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor HP": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_HP', ``, 'string') }}",
+            "Nama": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nama', ``, 'string') }}",
+            "Pesan Customer": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Pesan_Customer', ``, 'string') }}",
+            "AI Response": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('AI_Response', ``, 'string') }}",
+            "Timestamp": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nomor HP",
+              "displayName": "Nomor HP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pesan Customer",
+              "displayName": "Pesan Customer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Response",
+              "displayName": "AI Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        640,
+        1536
+      ],
+      "id": "17d105e2-021e-49a4-af96-5244945e1e69",
+      "name": "Lead - Add Chat Logger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/1147471374112722/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"data\": [\n    {\n      \"event_name\": \"Lead\",\n      \"event_time\": {{Math.floor(Date.now() / 1000)}},\n      \"action_source\": \"chat\",\n      \"event_source_url\": \"https://ritzglam.com/lead-event\",\n      \"user_data\": {\n        \"client_user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36\",\n        \"ph\": \"{{ $json.hashed_ph }}\",\n        \"fn\": \"{{ $json.hashed_fn }}\",\n        \"ct\": \"{{ $json.hashed_ct }}\"\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        1280
+      ],
+      "id": "5f3ded6b-17e5-4d03-9333-7adf7e73104c",
+      "name": "Lead Meta Pixel",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7QNhHHaUzAbu8cmD",
+          "name": "Ritzglam Facebook Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1372416366,
+          "mode": "list",
+          "cachedResultName": "order_list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1372416366"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nama": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nama', ``, 'string') }}",
+            "Alamat ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Alamat_', ``, 'string') }}",
+            "Nomor Telepon": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_Telepon', ``, 'string') }}",
+            "Nama Produk": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nama_Produk', ``, 'string') }}",
+            "qty": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('qty', ``, 'string') }}",
+            "Harga ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Harga_', ``, 'string') }}",
+            "Total Harga": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Total_Harga', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Alamat ",
+              "displayName": "Alamat ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nomor Telepon",
+              "displayName": "Nomor Telepon",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nama Produk",
+              "displayName": "Nama Produk",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "qty",
+              "displayName": "qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Harga ",
+              "displayName": "Harga ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total Harga",
+              "displayName": "Total Harga",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Metode Pembayaran",
+              "displayName": "Metode Pembayaran",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        1536
+      ],
+      "id": "cc82ddbe-eac2-4649-886a-fbb99f21af3b",
+      "name": "Lead - Add Order Invoice",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/1147471374112722/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n  {\n    \"data\": [\n      {\n        \"event_name\": \"ViewContent\",\n        \"event_time\": Math.floor(Date.now() / 1000),\n        \"action_source\": \"website\",\n        \"event_source_url\": `https://ritzglam.com/products/${$json.URI}`,\n        \"user_data\": {\n          \"client_user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36\",\n          \"fn\": $json['data.name']\n        }\n      }\n    ]\n  }\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2192,
+        1552
+      ],
+      "id": "679356fc-ce4f-434d-8431-e06dc6dd063f",
+      "name": "Meta Pixel ViewConten",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7QNhHHaUzAbu8cmD",
+          "name": "Ritzglam Facebook Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/1147471374112722/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n  {\n    \"data\": [\n      {\n        \"event_name\": \"ViewContent\",\n        \"event_time\": Math.floor(Date.now() / 1000),\n        \"action_source\": \"chat\",\n        \"user_data\": {\n          \"client_user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36\",\n          \"fn\": $json['data.name']\n        }\n      }\n    ]\n  }\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1696,
+        128
+      ],
+      "id": "8981a943-362d-4d43-9da1-391b9a00ddc6",
+      "name": "Meta Pixel ViewContent",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7QNhHHaUzAbu8cmD",
+          "name": "Ritzglam Facebook Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Checkout System\nDIgunakan untuk konfirmasi Metode Pembayaran dan mengubah status ke awaiting-payment. Data tersebut akan dikirimkan ke Meta Pixel (initial Checkout).",
+        "height": 624,
+        "width": 1024
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        1760
+      ],
+      "typeVersion": 1,
+      "id": "b33811a1-d772-49ed-a332-93982b100b34",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## Initial Checkout Conversation API\nDigunakan untuk Mencatat Biodata yang dikirimkan user",
+        "height": 288,
+        "width": 464
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1728
+      ],
+      "id": "68ef5433-3394-4c93-b60e-c35358a437a4",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=# 1. CORE IDENTITY (Who You Are?)\nYou are the RitzGlam **Checkout System AI** 🛒. You activate when a customer (status 'checkout') replies with their chosen payment method (QRIS, Transfer Bank/TF, or COD). Your mission is to: retrieve their order, update it with the payment method, look up product details, update their status to 'awaiting-payment', log the chat, generate the correct payment instructions, AND prepare the data needed for the 'InitiateCheckout' Meta Pixel event. Stay friendly (\"Bestie\" persona) and efficient using clear Indonesian.\n\n# 2. KNOWLEDGE BASE (What You Know?)\nYou can access previous order details and product SKU/IDs using the provided tools.\n\n# 3. REAL-TIME CONTEXT (What's Happening Now?)\n* **Customer:** {{ $json['Username WhatsApp'] }} *(Assuming data comes from a previous step)*\n* **WA Number:** {{ $json['Nomor WhatsApp'] }} *(Assuming data comes from a previous step, you can use for verifying the )*\n* **Current Chat Status:** checkout *(This is why you are active)*\n* **Customer's Latest Message:** \"{{ $('WhatsApp Trigger').item.json.messages[0].text.body }}\" *(This message CONTAINS their payment choice: \"QRIS\", \"TF\", \"Transfer Bank\", \"COD\", etc.)*\n\n# 4. AVAILABLE TOOLS (Your Action Kit!)\nYou have ONLY these tools connected to perform your sequence:\n\n-   **Tool Name:** `Read_Order_Invoice` *(Assuming you create this tool to read from order_list)*\n    * **Description:** Use this FIRST to retrieve the customer's existing order details (like product name, quantity, total price) from the `order_list` sheet using their phone number.\n    * **Parameters:** `Nomor_Telepon` (string)\n-   **Tool Name:** `Checkout - Adding Payment Method...` *(Update order_list)*\n    * **Description:** Call this AFTER retrieving the order and identifying the payment method to update the `Metode Pembayaran` column in the `order_list` sheet for this customer's order.\n    * **Parameters:** `Nomor_Telepon` (string), `Metode_Pembayaran` (string - \"QRIS\", \"Transfer Bank\", or \"COD\")\n-   **Tool Name:** `Checkout - Checking SKUs an...` *(Read product_list)*\n    * **Description:** Call this AFTER retrieving the order to get the `Kode Produk (SKU)` and `Harga (Asli)` (price per item) from the `product_list` sheet using the `Nama_Produk` found in the order invoice.\n    * **Parameters:** `Nama_Produk` (string)\n-   **Tool Name:** `Checkout - Edit Customer Data` *(Update customer_data)*\n    * **Description:** Call this AFTER updating the payment method to change the customer's status in the `customer_data` sheet to exactly `\"awaiting-payment\"`. . Note, if the client sent the number with '0' in early number, you can change with '62'.\n    * **Parameters:** `Nomor_WhatsApp` (string), `Status` (string, fixed value: \"awaiting-payment\")\n-   **Tool Name:** `Checkout - Add Chat Logger` *(Append chat_log)*\n    * **Description:** Call this near the end, after generating your response text, to log this specific interaction (payment choice + your instructions) into the `chat_log` sheet.\n    * **Parameters:** `Nomor_HP` (string), `Nama` (string), `Pesan_Customer` (string - the payment choice message), `AI_Response` (string - your instruction message)\n-   **Tool Name:** `Trigger_Send_QRIS_Image` *(NEW Tool needed)*\n    * **Description:** Call this ONLY IF the customer chose \"QRIS\", AFTER you have generated the main response text. This signals the N8N workflow to send the QRIS barcode image.\n    * **Parameters:** (Potentially none needed, or `Nomor_Telepon` if the image sending needs context)\n\n# 5. GLOBAL RULES (Must Follow!)\n* If the customer's message, despite being in 'checkout' status, asks for a human (\"live agent\", \"CS\"), STOP. Output JSON must set `current_status`: \"need-agent\".\n* If the customer cancels (\"tidak jadi\", \"batal\") at this stage, STOP. Output JSON must set `current_status`: \"new-customer\".\n\n# 6. WORKFLOW & INSTRUCTIONS (Your EXACT Sequence!)\nYou are triggered because the customer sent their payment choice. Follow these steps precisely:\n\n1.  **Identify Payment Method:** Determine if the `Latest Customer Message` indicates \"QRIS\", \"Transfer Bank\" (TF), or \"COD\". If unclear, ask again.\n2.  **Retrieve Order (Tool Call):** Call `Read_Order_Invoice` using the customer's `WA Number` to get their `Nama_Produk`, `qty`, and `Harga` (Total).\n3.  **Update Payment Method (Tool Call):** Call `Checkout - Adding Payment Method...` with the `Nomor_Telepon` and the identified payment method.\n4.  **Get Product Details (Tool Call):** Call `Checkout - Checking SKUs an...` using the `Nama_Produk` from the retrieved order to get the `Kode Produk (SKU)` and `Harga (Asli)` (item price).\n5.  **Update Status (Tool Call):** Call `Checkout - Edit Customer Data` to set the customer's status to `\"awaiting-payment\"`.\n6.  **Generate Response Text:** Create the appropriate response based on the payment method:\n    * **IF QRIS:** \"Siap Bestie! Pembayaran via QRIS ya. Totalnya [Total Harga dari Order]. Ini QR code-nya, ditunggu ya pembayarannya ✨\" *(Jangan lupa panggil tool Trigger_Send_QRIS_Image setelah ini!)*\n    * **IF TF:** \"Oke Bestie, via Transfer Bank ya! Totalnya [Total Harga dari Order]. Bisa transfer ke rekening **BNI 0234555560 a.n Mochammad Enrique Lazuardi Ramadany**. Kalau sudah, kabarin yaa 😉\"\n    * **IF COD:** \"Sip, COD ya Bestie! Totalnya [Total Harga dari Order]. Nanti kurirnya akan infoin kamu pas paketnya mau sampai. Pastiin ada di tempat yaa! Kamu bisa cek status pesananmu [mungkin link tracking jika ada].\"\n7.  **Log Chat (Tool Call):** Call `Checkout - Add Chat Logger` with the customer's payment choice message and the response text you just generated.\n8.  **Trigger QRIS Image (Conditional Tool Call):** **IF** the chosen method was \"QRIS\", **NOW** call the `Trigger_Send_QRIS_Image` tool. **Trigger Checkout WhatsApp Response (Tool Call):** **IF** the chosen method was \"TF or COD\", **NOW** call the `Checkout_whatsApp_Response` tool.\n9.  **Prepare Pixel Data (Internal Task):** Gather all necessary data for the `InitiateCheckout` event: `hashed_ph` (hash WA Number), `hashed_fn` (hash Customer Name from context/order), `hashed_ct` (hash address from order), `total_value` (Total Harga from order), `product_id` (SKU), `quantity` (qty from order), `item_price` (Harga Asli).\n10. **Prepare Final Output:** Create the final JSON output containing the response text, the new status, and the prepared pixel data.\n\n# 7. OUTPUT FORMAT (Your Work Result!)\n* Output RAW JSON ONLY. No markdown.\n* The JSON MUST contain these THREE keys:\n    1.  `\"response_text\"`: (string) The payment instruction message you generated in Step 6. *(This serves as fallback if tool calls fail)*.\n    2.  `\"current_status\"`: (string) Set this to `\"awaiting-payment\"` (or `\"new-customer\"` / `\"need-agent\"` if global rules triggered).\n    3.  `\"pixel_data\"`: (object) A nested JSON object containing ALL data needed for the 'InitiateCheckout' pixel, ready for the N8N hashing/sending flow. Use simple keys (e.g., `phone_raw`, `name_raw`, `city_raw`, `total_value`, `product_id`, `quantity`, `item_price`).\n\n* **Example Output (if TF chosen):**\n    ```json\n    {\n      \"response_text\": \"Oke Bestie, via Transfer Bank ya! Totalnya Rp 178.000. Bisa transfer ke rekening BNI 0234555560 a.n Ritzglam Serum. Kalau sudah, kabarin yaa 😉\",\n      \"current_status\": \"awaiting-payment\",\n      \"pixel_data\": {\n        \"phone_raw\": \"6287754434901\",\n        \"name_raw\": \"Mochammad Enrique\",\n        \"city_raw\": \"Jl. Keren No. 1, Surabaya\", // Assuming address was in order details\n        \"total_value\": 178000,\n        \"product_id\": \"RGL-LS-SS\",\n        \"quantity\": 2,\n        \"item_price\": 89000\n      }\n    }\n    ```\n* **Example Output (if QRIS chosen):**\n    ```json\n    {\n      \"response_text\": \"Siap Bestie! Pembayaran via QRIS ya. Totalnya Rp 178.000. Ini QR code-nya, ditunggu ya pembayarannya ✨\", // N8N will send image separately triggered by tool call\n      \"current_status\": \"awaiting-payment\",\n      \"pixel_data\": {\n        \"phone_raw\": \"6287754434901\",\n        // ... rest of pixel data ...\n      }\n    }\n    ```"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        1872
+      ],
+      "id": "fc9d9259-d24e-4d20-8738-e9f4a241135f",
+      "name": "Checkout System"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "chat_log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor HP": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_HP', ``, 'string') }}",
+            "Nama": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nama', ``, 'string') }}",
+            "Pesan Customer": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Pesan_Customer', ``, 'string') }}",
+            "AI Response": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('AI_Response', ``, 'string') }}",
+            "Timestamp": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nomor HP",
+              "displayName": "Nomor HP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pesan Customer",
+              "displayName": "Pesan Customer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Response",
+              "displayName": "AI Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        2048
+      ],
+      "id": "252f1482-11b1-45fa-b378-7a96d6dee9a6",
+      "name": "Checkout - Add Chat Logger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        48,
+        2048
+      ],
+      "id": "ec4f171c-6d16-40a1-a927-d000df7f4503",
+      "name": "Checkout Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "MrMfc3VJLLr2Uee2",
+          "name": "Google Gemini(PaLM) - AI Agent API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/1147471374112722/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"data\": [\n    {\n      \"event_name\": \"InitiateCheckout\",\n      \"event_time\": {{ Math.floor(Date.now() / 1000) }},\n      \"action_source\": \"chat\",\n      \"event_source_url\": \"https://ritzglam.com/checkout-start\",\n      \"user_data\": {\n        \"client_user_agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36\",\n        \"ph\": \"{{ $json.hashed_ph }}\",\n        \"fn\": \"{{ $json.hashed_fn }}\",\n        \"ct\": \"{{ $json.hashed_ct }}\"\n      },\n      \"custom_data\": {\n        \"currency\": \"IDR\",\n        \"value\": {{ $json.totalValue }},\n        \"content_ids\": [\"{{ $('Parsing JSON - Checkout Function').item.json.pixel_data.product_id }}\"],\n        \"contents\": [\n          {\n            \"id\": \"{{ $('Parsing JSON - Checkout Function').item.json.pixel_data.product_id }}\",\n            \"quantity\": {{ $('Parsing JSON - Checkout Function').item.json.pixel_data.quantity }},\n            \"item_price\": {{ $('Parsing JSON - Checkout Function').item.json.pixel_data.item_price }}\n          }\n        ],\n        \"num_items\": {{ $('Parsing JSON - Checkout Function').item.json.pixel_data.quantity }}\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1456,
+        1840
+      ],
+      "id": "016f51c1-bc5b-41bb-a2e3-b5aa67553ab0",
+      "name": "Initial Checkout Meta Pixel",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7QNhHHaUzAbu8cmD",
+          "name": "Ritzglam Facebook Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1372416366,
+          "mode": "list",
+          "cachedResultName": "order_list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1372416366"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor Telepon": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_Telepon', ``, 'string') }}",
+            "Metode Pembayaran": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Metode_Pembayaran', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "Nomor Telepon"
+          ],
+          "schema": [
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Alamat ",
+              "displayName": "Alamat ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nomor Telepon",
+              "displayName": "Nomor Telepon",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nama Produk",
+              "displayName": "Nama Produk",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "qty",
+              "displayName": "qty",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Harga ",
+              "displayName": "Harga ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Total Harga",
+              "displayName": "Total Harga",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Metode Pembayaran",
+              "displayName": "Metode Pembayaran",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        640,
+        2048
+      ],
+      "id": "22b536a6-afeb-457e-a46e-cc1fca02dcec",
+      "name": "Checkout - Adding Payment Method Order Invoice1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mengambil output string dari AI Agent\nconst rawOutput = $input.first().json.output;\n\n// Menggunakan regular expression untuk menemukan blok JSON {...} di dalam string\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n\n// Cek jika JSON ditemukan\nif (jsonMatch) {\n  try {\n    // Mengambil string JSON yang bersih\n    const jsonString = jsonMatch[0];\n    \n    // Melakukan parsing string menjadi objek JSON yang sebenarnya\n    const parsedJson = JSON.parse(jsonString);\n    \n    // Mengembalikan objek JSON yang sudah bersih agar bisa digunakan node selanjutnya\n    return [\n      {\n        json: parsedJson\n      }\n    ];\n    \n  } catch (error) {\n    // Jika parsing gagal, kembalikan error agar workflow bisa dihentikan atau ditangani\n    console.error(\"Gagal melakukan parsing JSON:\", error);\n    return [{ json: { error: \"Invalid JSON format from AI\" } }];\n  }\n}\n\n// Jika tidak ada blok JSON yang ditemukan sama sekali\nreturn [{ json: { error: \"No JSON block found in AI output\" } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        752,
+        1872
+      ],
+      "id": "ca96680d-20e2-4df2-8011-d296045b1e0b",
+      "name": "Parsing JSON - Checkout Function"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 352502693,
+          "mode": "list",
+          "cachedResultName": "product_list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=352502693"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        2048
+      ],
+      "id": "436397c1-2b6a-4ac3-8e4e-4eddc6baf578",
+      "name": "Checkout - Checking SKUs and Product IDs",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Impor library kriptografi bawaan Node.js\nconst crypto = require('crypto');\n\n// 1. Ambil DATA OBJEK YANG SUDAH DIPARSING\nconst userData = $input.first().json.pixel_data;\n\nif (!userData) {\n  throw new Error(\"Data 'order_data' dari 'Parsing JSON' tidak ditemukan.\");\n}\n\n// 2. Fungsi Hashing\nfunction sha256(data) {\n  if (typeof data !== 'string' || data.length === 0) return null;\n  return crypto.createHash('sha256').update(data).digest('hex');\n}\n\n// 3. Siapkan output HANYA berisi nilai baru\nconst output = {\n  hashed_fn: sha256(userData.name_raw),\n  hashed_ph: sha256(userData.phone_raw),\n  hashed_ct: sha256(userData.city_raw),\n  totalValue: userData.quantity * userData.item_price\n};\n\n// 4. Kembalikan objek baru ini.\n// Output dari node ini akan berisi: { \"hashed_fn\": \"...\", \"hashed_ph\": \"...\", ... }\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        1840
+      ],
+      "id": "b7a52724-7059-40b7-b51f-5ca530f201f1",
+      "name": "Checkout Hashing"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor WhatsApp": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_WhatsApp__using_to_match_', ``, 'string') }}",
+            "Status ": "awaiting-payment",
+            "Timestamps": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        2048
+      ],
+      "id": "b3082094-5d37-40c5-812c-83f5876a1036",
+      "name": "Checkout - Edit Customer Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Customer Database').item.json['Nomor WhatsApp'] }}",
+        "contextWindowLength": 3
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        2240
+      ],
+      "id": "3cbf54a7-9466-484c-b694-ba20a83a5707",
+      "name": "Short Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Customer Database').item.json['Nomor WhatsApp'] }}",
+        "contextWindowLength": 3
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        464,
+        1232
+      ],
+      "id": "c2bb8833-eaba-405a-a3a1-7a23d9c4b1a8",
+      "name": "Short Memory1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Customer Database').item.json['Nomor WhatsApp'] }}",
+        "contextWindowLength": 3
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        256,
+        432
+      ],
+      "id": "09fb53d0-040b-4270-88ef-0f42b8090006",
+      "name": "Short Memory2"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "=829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "messageType": "image",
+        "mediaLink": "https://qris.interactive.co.id/homepage/images/assets/pay/harga/csan-qr-a.jpg",
+        "additionalFields": {
+          "mediaCaption": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Caption', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.whatsAppTool",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        2240
+      ],
+      "id": "ffcf9c7f-da6c-46eb-8821-c5832e67af3c",
+      "name": "Send QRIS Barcode",
+      "webhookId": "0a81c838-3051-4e79-888d-97e38b4b1c7b",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Purchasing System \nMelakukan closing statement dan mengubah status ke new-customer lagi agar pembeli dapat melakukan repeat order",
+        "height": 480,
+        "width": 1024
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        16,
+        2528
+      ],
+      "typeVersion": 1,
+      "id": "b0fa2eba-8031-4e39-ae6c-8b57486eae86",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## Purchasing Conversation API\nDigunakan untuk mengirimkan Invoice data ke Pixel dengan event Type Purchasing untuk mengoptimasi iklan\n",
+        "height": 288,
+        "width": 464
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        2512
+      ],
+      "id": "dc182683-5dc0-434b-b0ed-f090275d2789",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Customer Database').item.json['Nomor WhatsApp'] }}",
+        "contextWindowLength": 3
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        192,
+        2832
+      ],
+      "id": "a867f872-bfd3-49b4-b308-10ae5fc96e28",
+      "name": "Short Memory3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=# 1. CORE IDENTITY (Who You Are?)\nYou are the RitzGlam **Purchasing System AI** 💳. You activate when a customer (status 'awaiting-payment') sends a message. Your mission is to:\n1.  Check the customer's TRUE payment status (using `Purchasing - Read Customer Data`).\n2.  Execute a sequence of actions (Tool Calls) based on the status (Success or Pending).\n3.  Prepare the final 'Purchase' pixel data in your Main JSON output.\nYou MUST be precise, sequential, and use polite Indonesian.\n\n# 2. KNOWLEDGE BASE (What You Know?)\nYou read data from customer, order, and product sheets using your tools.\n\n# 3. REAL-TIME CONTEXT (What's Happening Now?)\n* **Customer:** {{ $json['Username WhatsApp'] }} *(Assuming data comes from a previous step)*\n* **WA Number:** {{ $json['Nomor WhatsApp'] }} *(Assuming data comes from a previous step, you can use for verifying the )*\n* **Current Chat Status:** checkout *(This is why you are active)*\n* **Customer's Latest Message:** \"{{ $('WhatsApp Trigger').item.json.messages[0].text.body }}\" *(This message CONTAINS their confirmation message example: \"Sudah Saya TF\", \"Sudah saya Bayar\" and the other mean buyer confirmation)*\n\n\n# 4. AVAILABLE TOOLS (Your Action Kit!)\nYou have ALL these tools. You MUST call them in the correct sequence when needed.\n\n-   **Tool Name:** `Purchasing - Read Customer Data`\n    * **Description:** Use this FIRST to check the customer's *actual current status* (e.g., \"purchased\", \"awaiting-payment\").\n    * **Parameters:** `Nomor_WhatsApp` (string)\n-   **Tool Name:** `Purchasing - Read Order Invoice` ***(WAJIB DITAMBAHKAN DI N8N)***\n    * **Description:** Use this ONLY IF payment is successful. Retrieves the customer's full order details (Nama_Produk, qty, Harga [Total], Metode_Pembayaran) from the `order_list` sheet.\n    * **Parameters:** `Nomor_Telepon` (string)\n-   **Tool Name:** `Purchasing - Checking SKUs an...`\n    * **Description:** Use this ONLY IF payment is successful. Gets the `Kode Produk (SKU)` and `Harga (Asli)` (item price).\n    * **Parameters:** `Nama_Produk` (string)\n-   **Tool Name:** `Purchasing - Edit Customer Data`\n    * **Description:** Call this ONLY IF payment is successful. Updates the customer's status in `customer_data` back to `\"new-customer\"`.\n    * **Parameters:** `Nomor_WhatsApp` (string), `Status` (string, fixed value: \"new-customer\")\n-   **Tool Name:** `Purchasing - Add Chat Logger`\n    * **Description:** Call this to log an interaction into the `chat_log` sheet.\n    * **Parameters:** `Nomor_HP` (string), `Nama` (string), `Pesan_Customer` (string), `AI_Response` (string)\n-   **Tool Name:** `WhatsApp Purchasing...`\n    * **Description:** Use this tool to send your generated text response to the customer via WhatsApp.\n    * **Parameters:** `recipientPhoneNumber` (string), `textBody` (string - your response message)\n\n# 5. GLOBAL RULES (Must Follow!)\n* If the customer asks for a human (\"live agent\", \"CS\"), STOP. Output JSON must set `pixel_data`: null and `current_status`: \"need-agent\".\n\n# 6. WORKFLOW & INSTRUCTIONS (Your EXACT Sequence!)\nYou are triggered by a message. Follow these steps:\n\n1.  **Check True Status (Tool Call):** Call `Purchasing - Read Customer Data` to check their *actual* status.\n2.  **Analyze Status & Respond:**\n\n    * **SCENARIO A: Status IS `purchased` (or `paid`)**\n        * *(Payment is confirmed! Follow this sequence of 5-6 tool calls)*\n        1.  **Generate `response_text` (Internal):** Create a polite \"Thank You\" message (e.g., \"Terima kasih banyak Kak [Nama Customer]! Pembayaran Anda telah kami terima...\")\n        2.  **Call `WhatsApp Purchasing...`:** Call this tool with the `response_text` you just generated.\n        3.  **Call `Purchasing - Edit Customer Data`:** Call this tool to set status back to `\"new-customer\"`.\n        4.  **Gather Pixel Data (Tool Calls):**\n            * Call `Purchasing - Read Order Invoice` to get all order details (product, qty, total, payment method).\n            * Call `Purchasing - Checking SKUs an...` to get the `SKU` and `item_price`.\n        5.  **Call `Purchasing - Add Chat Logger`:** Call this tool with the customer's message and your \"Thank You\" response.\n        6.  **Prepare Final Output (Purchase Event):** Your Main Output JSON (for the `Parsing JSON` node) MUST be the `pixel_data` object (see format below).\n\n    * **SCENARIO B: Status is still `awaiting-payment`**\n        * *(Payment is not confirmed yet. Follow this sequence of 2 tool calls)*\n        1.  **Generate `response_text` (Internal):** Create the polite \"Please Wait/Contact CS\" message (e.g., \"Halo Kak [Nama Customer], pembayaran Anda masih dalam proses pengecekan... jika ada kendala, ketik 'live-agent'...\")\n        2.  **Call `WhatsApp Purchasing...`:** Call this tool with the `response_text` you just generated.\n        3.  **Call `Purchasing - Add Chat Logger`:** Call this tool with the customer's message and your \"Himbauan\" response.\n        4.  **Prepare Final Output (No Event):** Your Main Output JSON (for the `Parsing JSON` node) MUST be `{\"pixel_data\": null}`.\n\n# 7. OUTPUT FORMAT (Your Main Output to `Parsing JSON` node)\n* Your final Main Output **MUST** be a RAW JSON object, containing ONLY the `pixel_data` (or null).\n* **Do NOT include `response_text` or `current_status` in this Main Output JSON**, as those actions are handled by your Tool Calls.\n\n* **Example Output (SCENARIO A - Purchase Success):**\n    ```json\n    {\n      \"pixel_data\": {\n        \"event_name\": \"Purchase\",\n        \"phone_raw\": \"6287754434901\",\n        \"name_raw\": \"Mochammad Enrique\",\n        \"city_raw\": \"Jl. Keren No. 1, Surabaya\",\n        \"total_value\": 178000,\n        \"product_id\": \"RGL-LS-SS\",\n        \"quantity\": 2,\n        \"item_price\": 89000,\n        \"payment_method\": \"QRIS\"\n      }\n    }\n    ```\n* **Example Output (SCENARIO B - Pending):**\n    ```json\n    {\n      \"pixel_data\": null\n    }\n    ```"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        2656
+      ],
+      "id": "378b059a-a64b-4dd6-9843-8308c9e6594a",
+      "name": "Purchasing System"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "=829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text_Body', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTool",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        2848
+      ],
+      "id": "a0c45179-62bd-4a65-b589-2fc4676aadab",
+      "name": "WhatsApp Purchasing Response",
+      "webhookId": "0a81c838-3051-4e79-888d-97e38b4b1c7b",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mengambil output string dari AI Agent\nconst rawOutput = $input.first().json.output;\n\n// Menggunakan regular expression untuk menemukan blok JSON {...} di dalam string\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n\n// Cek jika JSON ditemukan\nif (jsonMatch) {\n  try {\n    // Mengambil string JSON yang bersih\n    const jsonString = jsonMatch[0];\n    \n    // Melakukan parsing string menjadi objek JSON yang sebenarnya\n    const parsedJson = JSON.parse(jsonString);\n    \n    // Mengembalikan objek JSON yang sudah bersih agar bisa digunakan node selanjutnya\n    return [\n      {\n        json: parsedJson\n      }\n    ];\n    \n  } catch (error) {\n    // Jika parsing gagal, kembalikan error agar workflow bisa dihentikan atau ditangani\n    console.error(\"Gagal melakukan parsing JSON:\", error);\n    return [{ json: { error: \"Invalid JSON format from AI\" } }];\n  }\n}\n\n// Jika tidak ada blok JSON yang ditemukan sama sekali\nreturn [{ json: { error: \"No JSON block found in AI output\" } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        2656
+      ],
+      "id": "5b17f53f-8bef-4254-8bb9-bc334e0da586",
+      "name": "Parsing JSON - Purchasing Function"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Impor library kriptografi bawaan Node.js\nconst crypto = require('crypto');\n\n// 1. Ambil DATA OBJEK YANG SUDAH DIPARSING\nconst userData = $input.first().json.pixel_data;\n\nif (!userData) {\n  throw new Error(\"Data 'order_data' dari 'Parsing JSON' tidak ditemukan.\");\n}\n\n// 2. Fungsi Hashing\nfunction sha256(data) {\n  if (typeof data !== 'string' || data.length === 0) return null;\n  return crypto.createHash('sha256').update(data).digest('hex');\n}\n\n// 3. Siapkan output HANYA berisi nilai baru\nconst output = {\n  hashed_fn: sha256(userData.name_raw),\n  hashed_ph: sha256(userData.phone_raw),\n  hashed_ct: sha256(userData.city_raw),\n  totalValue: userData.quantity * userData.item_price\n};\n\n// 4. Kembalikan objek baru ini.\n// Output dari node ini akan berisi: { \"hashed_fn\": \"...\", \"hashed_ph\": \"...\", ... }\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        2624
+      ],
+      "id": "e99fd63d-1ff2-4f1e-b6ea-e8a568e07ed0",
+      "name": "Purchasing Hashing"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor WhatsApp": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_WhatsApp__using_to_match_', ``, 'string') }}",
+            "Status ": "inactive",
+            "Timestamps": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        752,
+        2848
+      ],
+      "id": "a626e22b-1573-44b0-ab47-33b039b91e65",
+      "name": "Purchasing - Edit Customer Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 352502693,
+          "mode": "list",
+          "cachedResultName": "product_list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=352502693"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        2848
+      ],
+      "id": "26dc31f4-729e-4f80-b08f-734c1ee7faa3",
+      "name": "Purchasing - Checking SKUs and Product IDs1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        48,
+        2832
+      ],
+      "id": "9cf8fa6c-97f0-4e63-8d1f-abeb646199b7",
+      "name": "Purchasing Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "MrMfc3VJLLr2Uee2",
+          "name": "Google Gemini(PaLM) - AI Agent API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "chat_log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor HP": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nomor_HP', ``, 'string') }}",
+            "Nama": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nama', ``, 'string') }}",
+            "Pesan Customer": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Pesan_Customer', ``, 'string') }}",
+            "AI Response": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('AI_Response', ``, 'string') }}",
+            "Timestamp": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nomor HP",
+              "displayName": "Nomor HP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nama",
+              "displayName": "Nama",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pesan Customer",
+              "displayName": "Pesan Customer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Response",
+              "displayName": "AI Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        464,
+        2848
+      ],
+      "id": "3ee61ea2-c9a6-4009-8f32-5f59912383bc",
+      "name": "Purchasing - Add Chat Logger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        2848
+      ],
+      "id": "bdc471d9-ec90-4c5b-898e-c2a87ad10661",
+      "name": "Purchasing - Read Customer Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/1147471374112722/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"data\": [\n    {\n      \"event_name\": \"Purchase\",\n      \"event_time\": {{ Math.floor(Date.now() / 1000) }},\n      \"action_source\": \"website\",\n      \"event_source_url\": \"https://websiteklien.com/terima-kasih-pesanan-XYZ-123\",\n      \"user_data\": {\n        \"ph\": \"6f1c4e976a5a297e69d7b9c9f65e2365287f461159846b45a6396e8d1a6e902b\",\n        \"fn\": \"55c8a41926b38c2275f1146f8ac3f64c63390eda15b4937740f901174092b77a\",\n        \"ct\": \"9405d429712741544a8b668f184742a0889223364f33b1e77f0a1c128f117c05\"\n      },\n      \"custom_data\": {\n        \"value\": 150000,\n        \"currency\": \"IDR\",\n        \"content_name\": \"Nama Produk Klien Sesuai Pesanan\",\n        \"content_ids\": [\"SKU-PRODUK-001\"],\n        \"num_items\": 2,\n        \"payment_method\": \"qris\"\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        2624
+      ],
+      "id": "cf77b6c3-1184-4181-bb69-41a87449b09c",
+      "name": "Meta Pixel Purchasing1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "7QNhHHaUzAbu8cmD",
+          "name": "Ritzglam Facebook Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": 0,
+            "Nomor WhatsApp": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+            "Status ": "live-agent"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        112
+      ],
+      "id": "ce7dc27a-eafd-439f-80c8-0d90bf80626a",
+      "name": "Update Status to live-agent",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.response_text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        64,
+        112
+      ],
+      "id": "13043ad6-cede-429d-8bb1-4176fee03f06",
+      "name": "Sending Response - Need Agent",
+      "webhookId": "c900aa91-b7d4-48f1-b3af-f9a872571246",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Human Agent Notification\nCustomer akan dihubungkan dengan Human Agent dan ",
+        "height": 288,
+        "width": 1040
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5cb212ae-748a-45f8-a877-b286b5a54bc6",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "# Frontliner Agent\nDigunakan untuk melayani pertanyaan hingga meyakinkan customer untuk membeli produk. Data data tersebut semua akan dikirimkan ke Meta Pixel (viewContent). ",
+        "height": 656,
+        "width": 1040
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        304
+      ],
+      "id": "1d87c3ac-a436-4e4e-9a5c-96bb38641c49",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Nomor WhatsApp",
+              "lookupValue": "={{ $json['Nomor WhatsApp'] }}"
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -976,
+        1184
+      ],
+      "id": "59b58f99-46e8-4f21-8d58-c751d7341f85",
+      "name": "Customer Database",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor WhatsApp": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+            "Username WhatsApp": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}",
+            "Timestamps": "={{ $now.setZone(\"Asia/Jakarta\").toISO() }}"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1232,
+        1184
+      ],
+      "id": "6659eae4-ec76-4e12-976c-d519a9df4a5c",
+      "name": "Customer Database Check",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "\"Whoops! Kayaknya sistem kita lagi ada sedikit glitch nih, Bestie. 🥺 Mohon coba kirim ulang pesan kamu beberapa saat lagi ya!\"",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        864,
+        560
+      ],
+      "id": "69e49d0b-c40d-46c8-9fb7-cd58cf606522",
+      "name": "Send Error Response",
+      "webhookId": "c900aa91-b7d4-48f1-b3af-f9a872571246",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 10,
+        "options": {
+          "reset": true
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        640,
+        576
+      ],
+      "id": "829e7042-0e4e-44fc-b468-37016d62883f",
+      "name": "AI Agent Restart"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 352502693,
+          "mode": "list",
+          "cachedResultName": "product_list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=352502693"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        1536
+      ],
+      "id": "079a8a7d-afcd-46b0-83c2-031f68277244",
+      "name": "Lead - Product Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c9438e84-1984-4f84-b6e3-49c63fefe94e",
+              "leftValue": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "ae803178-925f-445c-b21f-674c9ecf7de4",
+              "leftValue": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1408,
+        1392
+      ],
+      "id": "c4e643de-aedf-452c-96a8-ff6644244ab2",
+      "name": "Data_cheker"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        1168
+      ],
+      "id": "bb72c399-a685-407a-a296-3513dada16c7",
+      "name": "Human Agent, Pass!"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        1488
+      ],
+      "id": "2b6c5385-279c-42ab-9148-67fc02e40c78",
+      "name": "Do Nothing, Pass!"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "=829469896910434",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text_Body', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTool",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        2224
+      ],
+      "id": "c330725d-94cb-4b99-9cbe-1bfcabda9b7a",
+      "name": "Send Account Bank to Customer",
+      "webhookId": "0a81c838-3051-4e79-888d-97e38b4b1c7b",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## OLD ENCRYPTION OF META ADS (Chatbot v1)",
+        "height": 672,
+        "width": 1264
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3152,
+        1232
+      ],
+      "id": "b6172c40-e834-4145-80a5-d8488e61ea74",
+      "name": "Sticky Note17"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Data_cheker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Status Checker": {
+      "main": [
+        [
+          {
+            "node": "Sending Response - Need Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Frontliner System",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Frontliner System",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Frontliner System",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Frontliner System",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lead System",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Checkout System",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Purchasing System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URI Configuration (Lip Serum)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URI Configuration (Lip Balm)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "URI Configuration (Moisture)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "ViewContent Hashing - fullName": {
+      "main": [
+        [
+          {
+            "node": "Meta Pixel ViewConten",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "ViewContent Hashing - fullName",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Live-Agent Checker": {
+      "main": [
+        [
+          {
+            "node": "Human Agent, Pass!",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Status Checker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Frontliner System",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Frontliner System": {
+      "main": [
+        [
+          {
+            "node": "Parsing JSON",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent Restart",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Word Detection Rules1": {
+      "main": [
+        [
+          {
+            "node": "Send Serum Express1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Lip Balm1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Moisturizer1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Serum Express1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Serum Express1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Serum Express1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Moisturizer1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Moisturizer1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Moisturizer1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Moisturizer1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Response - AI Agent Consultant": {
+      "main": [
+        [
+          {
+            "node": "ViewContent Hashing - fullName1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ViewContent Hashing - fullName1": {
+      "main": [
+        [
+          {
+            "node": "Meta Pixel ViewContent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing JSON": {
+      "main": [
+        [
+          {
+            "node": "Send Response - AI Agent Consultant",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Word Detection Rules1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Product Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Frontliner System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Customer Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Frontliner System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Customer Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Frontliner System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Chat Logger": {
+      "ai_tool": [
+        [
+          {
+            "node": "Frontliner System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Chat Logger": {
+      "ai_tool": [
+        [
+          {
+            "node": "Frontliner System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Lead System",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead System": {
+      "main": [
+        [
+          {
+            "node": "Parsing JSON - Lead Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing JSON - Lead Function": {
+      "main": [
+        [
+          {
+            "node": "Send Response - Lead AI Agent ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Response - Lead AI Agent ": {
+      "main": [
+        [
+          {
+            "node": "Lead Hashing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Hashing": {
+      "main": [
+        [
+          {
+            "node": "Lead Meta Pixel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead - Edit Customer Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead - Add Chat Logger": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead - Add Order Invoice": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout System": {
+      "main": [
+        [
+          {
+            "node": "Parsing JSON - Checkout Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout - Add Chat Logger": {
+      "ai_tool": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout - Adding Payment Method Order Invoice1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing JSON - Checkout Function": {
+      "main": [
+        [
+          {
+            "node": "Checkout Hashing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout - Checking SKUs and Product IDs": {
+      "ai_tool": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout Hashing": {
+      "main": [
+        [
+          {
+            "node": "Initial Checkout Meta Pixel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checkout - Edit Customer Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Short Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Short Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Lead System",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Short Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Frontliner System",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send QRIS Barcode": {
+      "ai_tool": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Short Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "Purchasing System",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Purchasing System": {
+      "main": [
+        [
+          {
+            "node": "Parsing JSON - Purchasing Function",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Purchasing Response": {
+      "ai_tool": [
+        [
+          {
+            "node": "Purchasing System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing JSON - Purchasing Function": {
+      "main": [
+        [
+          {
+            "node": "Purchasing Hashing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Purchasing Hashing": {
+      "main": [
+        [
+          {
+            "node": "Meta Pixel Purchasing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Purchasing - Edit Customer Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Purchasing System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Purchasing - Checking SKUs and Product IDs1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Purchasing System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Purchasing Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Purchasing System",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Purchasing - Add Chat Logger": {
+      "ai_tool": [
+        [
+          {
+            "node": "Purchasing System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Purchasing - Read Customer Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Purchasing System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sending Response - Need Agent": {
+      "main": [
+        [
+          {
+            "node": "Update Status to live-agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Database": {
+      "main": [
+        [
+          {
+            "node": "Live-Agent Checker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Database Check": {
+      "main": [
+        [
+          {
+            "node": "Customer Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent Restart": {
+      "main": [
+        [
+          {
+            "node": "Send Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Frontliner System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead - Product Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "Lead System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data_cheker": {
+      "main": [
+        [
+          {
+            "node": "Customer Database Check",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Do Nothing, Pass!",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Account Bank to Customer": {
+      "ai_tool": [
+        [
+          {
+            "node": "Checkout System",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "25905e11-3d23-4e83-80b6-21085159c8ad",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "55973a512ee72404dbf6175d07152fb66fcdecaf78ed110369b320b8c886696e"
+  },
+  "id": "qK3OvdCfvcPxiRMv",
+  "tags": []
+}

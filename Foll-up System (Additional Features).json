@@ -1,0 +1,684 @@
+{
+  "name": "Foll-up System (Additional Features)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -928,
+        192
+      ],
+      "id": "d3e5be76-4af2-4a37-b8d0-e1d949aead85",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0fb7e252-615b-4454-9070-5e7872a4472f",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "new-customer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Change Flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "following-up-reminder",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a92dc961-c389-48cf-a118-79c71aff2e4e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reminder Flow"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f9094102-6036-4336-9fa4-41d80a27c905",
+                    "leftValue": "={{ $json['Status '] }}",
+                    "rightValue": "following-up-promotion",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Promotion Flow"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -560,
+        160
+      ],
+      "id": "8b4f1ace-e470-450c-a8cb-3ed068a8dbf8",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamps": "={{ $now }}",
+            "Nomor WhatsApp": "={{ $json.contacts[0].input }}",
+            "Status ": "=following-up-promotion"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        176
+      ],
+      "id": "9046040f-1087-49ce-bfa9-c956f47711aa",
+      "name": "Update Status on Foll-up Promotion",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5ff152f4-704d-476b-8f23-ed9517fc7c71",
+              "leftValue": "={{ new Date(new Date().setSeconds(0,0)) }}",
+              "rightValue": "={{ new Date(new Date($json.Timestamps).getTime() + (30 * 60 * 1000)) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        192
+      ],
+      "id": "de7e1cc8-4856-4334-9b24-09414908d831",
+      "name": "Check Timer Reminder"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5ff152f4-704d-476b-8f23-ed9517fc7c71",
+              "leftValue": "={{ new Date(new Date().setSeconds(0,0)) }}",
+              "rightValue": "={{ new Date(new Date($json.Timestamps).getTime() + (24 * 60 * 60 * 1000)) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        384
+      ],
+      "id": "6203d8a9-ef42-4f55-9ec5-ccbbda3ec01a",
+      "name": "Check Timer Promotion"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "+6287754434901",
+        "textBody": "=Haloo kak, {{ $json['Username WhatsApp'] }}. Apakah kamu bingung dalam memilih produk? Silahkan ajukan pertanyaan ke mimin?",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        64,
+        368
+      ],
+      "id": "3de619f7-0da6-4e85-abaf-9369db53847c",
+      "name": "Promotion Message",
+      "webhookId": "9b0d4931-09a4-43ad-9349-8c6cb4de2d78",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nomor WhatsApp": "={{ $json.contacts[0].input }}",
+            "Timestamps": "={{ $now }}",
+            "Status ": "inactive"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        368
+      ],
+      "id": "b2963640-670d-4b8a-9b7a-872ad2605826",
+      "name": "Update Status on Foll-up Done",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamps": "={{ $now }}",
+            "Status ": "following-up-reminder",
+            "Nomor WhatsApp": "={{ $('Get Customer Timestamps').item.json['Nomor WhatsApp'] }}"
+          },
+          "matchingColumns": [
+            "Nomor WhatsApp"
+          ],
+          "schema": [
+            {
+              "id": "Nomor WhatsApp",
+              "displayName": "Nomor WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Username WhatsApp",
+              "displayName": "Username WhatsApp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status ",
+              "displayName": "Status ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamps",
+              "displayName": "Timestamps",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "f14bab43-24c1-49bf-9ee7-4c3e9a60d532",
+      "name": "Update Status on Foll-up Reminder",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0",
+          "mode": "list",
+          "cachedResultName": "AI Chat Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1803814941,
+          "mode": "list",
+          "cachedResultName": "customer_data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1agS6yLSxoxKykp5TVZbtdQJz5VoX_s0jAcx8VV5LAm0/edit#gid=1803814941"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -736,
+        192
+      ],
+      "id": "55b1ec9d-9c92-431a-8d7a-d8d69b5b8eed",
+      "name": "Get Customer Timestamps",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hDKblMzxr2XTlneN",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        544
+      ],
+      "id": "7e5d5fdf-51da-4cd2-96b2-15b3a7f8df68",
+      "name": "Status Undefined, Pass!"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "829469896910434",
+        "recipientPhoneNumber": "+6287754434901",
+        "textBody": "=Haloo kak, {{ $json['Username WhatsApp'] }} . Apakah kamu bingung dalam memilih produk? Silahkan ajukan pertanyaan ke mimin?",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        64,
+        176
+      ],
+      "id": "1c455be0-75b6-4ef2-b350-0efa6fcde6d3",
+      "name": "Reminder Message",
+      "webhookId": "9b0d4931-09a4-43ad-9349-8c6cb4de2d78",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "evrDe1A5qYTFL9vH",
+          "name": "WhatsApp API For Sending Message"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Customer Timestamps",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Update Status on Foll-up Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Timer Reminder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Timer Promotion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Status Undefined, Pass!",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Timer Reminder": {
+      "main": [
+        [
+          {
+            "node": "Reminder Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Timer Promotion": {
+      "main": [
+        [
+          {
+            "node": "Promotion Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promotion Message": {
+      "main": [
+        [
+          {
+            "node": "Update Status on Foll-up Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Customer Timestamps": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reminder Message": {
+      "main": [
+        [
+          {
+            "node": "Update Status on Foll-up Promotion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9d0d37b3-13cd-4c34-8da6-4450307da8a4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "55973a512ee72404dbf6175d07152fb66fcdecaf78ed110369b320b8c886696e"
+  },
+  "id": "vsEruMuoUEyJd4DD",
+  "tags": []
+}
